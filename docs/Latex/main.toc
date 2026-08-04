@@ -1,0 +1,100 @@
+\contentsline {chapter}{\numberline {1}مقدمه و کلیات پژوهش}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}مقدمه و بیان مسئله}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}اهمیت و ضرورت موضوع}{4}{section.1.2}%
+\contentsline {section}{\numberline {1.3}چالش‌های فنی بینایی ماشین در داخل کابین خودرو}{5}{section.1.3}%
+\contentsline {section}{\numberline {1.4}اهداف پژوهش و روش‌شناسی پیشنهادی}{5}{section.1.4}%
+\contentsline {chapter}{\numberline {2}مرور ادبیات و کارهای مرتبط}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}مقدمه}{6}{section.2.1}%
+\contentsline {section}{\numberline {2.2}روش‌های سنتی پردازش تصویر و یادگیری ماشین}{6}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}محدودیت‌های روش‌های سنتی}{6}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}سقوط روش‌های سنتی و ظهور یادگیری عمیق}{7}{section.2.3}%
+\contentsline {section}{\numberline {2.4}مرور پژوهش‌های برجسته بر روی مجموعه داده State Farm}{7}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}استفاده از معماری‌های پایه CNN و یادگیری انتقالی}{7}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}توسعه معماری‌های سبک و بهینه‌سازی برای سیستم‌های Embedded}{7}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}رویکردهای تلفیقی و ترنسفورمرهای بینایی}{8}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}مقایسه و جمع‌بندی ادبیات تحقیق}{8}{section.2.5}%
+\contentsline {section}{\numberline {2.6}نتیجه‌گیری و جایگاه پژوهش حاضر}{8}{section.2.6}%
+\contentsline {chapter}{\numberline {3}مبانی نظری و فرمول‌بندی ریاضی}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}مقدمه}{9}{section.3.1}%
+\contentsline {section}{\numberline {3.2}مبانی شبکه‌های عصبی پیچشی (CNN)}{9}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}عملگر کانولوشن دوبعدی (2D\_Convolution)}{9}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}لایه‌های کاهش بعد (Pooling\_Layers)}{9}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}توابع فعال‌سازی (Activation\_Functions)}{10}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}معماری ResNet50 و اتصالات باقیمانده}{10}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}مفهوم یادگیری باقیمانده (Residual\_Learning)}{10}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}بلاک گلوگاه ($Bottleneck Architecture$)}{11}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}معماری MobileNetV2 و بهینه‌سازی محاسباتی}{11}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}کانولوشن تفکیک‌پذیر عمقی (Depthwise\_Separable\_Convolution)}{11}{subsection.3.4.1}%
+\contentsline {subsubsection}{تحلیل هزینه محاسباتی (Computational\_Cost)}{11}{subsubsection*.4}%
+\contentsline {subsection}{\numberline {3.4.2}بلاک باقیمانده معکوس (Inverted\_Residual\_Block)}{12}{subsection.3.4.2}%
+\contentsline {section}{\numberline {3.5}تابع زیان و الگوریتم بهینه‌سازی}{12}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}تابع زیان انتروپی متقاطع (Categorical\_Cross\_Entropy\_Loss)}{12}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}بهینه‌ساز Adam\_(Adaptive\_Moment\_Estimation)}{13}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}جمع‌بندی فصل}{13}{section.3.6}%
+\contentsline {chapter}{\numberline {4}تحلیل مجموعه داده و پیش‌پردازش}{14}{chapter.4}%
+\contentsline {section}{\numberline {4.1}مقدمه}{14}{section.4.1}%
+\contentsline {section}{\numberline {4.2}معرفی مجموعه داده State Farm}{14}{section.4.2}%
+\contentsline {section}{\numberline {4.3}تحلیل آماری و ساختار داده‌ها}{18}{section.4.3}%
+\contentsline {section}{\numberline {4.4}تکنیک‌های افزایش داده (Data\_Augmentation)}{22}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}تغییرات هندسی و رنگی}{22}{subsection.4.4.1}%
+\contentsline {section}{\numberline {4.5}تغییر ابعاد و نرمال‌سازی تصاویر ورودی}{25}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}تغییر مقیاس فضایی (Resizing)}{25}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}پیش‌پردازش و نرمال‌سازی اختصاصی مدل‌ها}{26}{subsection.4.5.2}%
+\contentsline {subsubsection}{۱. پیش‌پردازش در شبکه MobileNetV2}{26}{subsubsection*.16}%
+\contentsline {subsubsection}{۲. پیش‌پردازش در شبکه ResNet50}{26}{subsubsection*.17}%
+\contentsline {section}{\numberline {4.6}جمع‌بندی فصل}{27}{section.4.6}%
+\contentsline {chapter}{\numberline {5}معماری پیشنهادی و روش‌شناسی}{28}{chapter.5}%
+\contentsline {section}{\numberline {5.1}مقدمه}{28}{section.5.1}%
+\contentsline {section}{\numberline {5.2}معماری شبکه و لایه‌های سفارشی (Custom\_Classification\_Head)}{28}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}ساختار لایه‌های سفارشی}{28}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}معماری شبکه پیشنهادی مبتنی بر MobileNetV2}{29}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}معماری شبکه پیشنهادی مبتنی بر ResNet50}{30}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}استراتژی آموزش دو فازی (Two-Phase\_Training\_Strategy)}{31}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}فاز اول: استخراج ویژگی (Feature\_Extraction)}{32}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}فاز دوم: تنظیم دقیق (Fine-Tuning)}{32}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}هایپرپارامترها و مکانیزم‌های کنترلی آموزش}{32}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}تنظیمات هایپرپارامترها}{32}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}کال‌بک‌ها و مکانیزم‌های کنترلی (Callbacks)}{33}{subsection.5.4.2}%
+\contentsline {section}{\numberline {5.5}جمع‌بندی فصل}{33}{section.5.5}%
+\contentsline {chapter}{\numberline {6}نتایج تجربی و ارزیابی عملکرد}{34}{chapter.6}%
+\contentsline {section}{\numberline {6.1}مقدمه}{34}{section.6.1}%
+\contentsline {section}{\numberline {6.2}نتایج ارزیابی مدل ResNet50}{34}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}تحلیل گام به گام آموزش و ارزیابی مدل ResNet50}{36}{subsection.6.2.1}%
+\contentsline {subsubsection}{فاز اول: استخراج ویژگی‌ها (Feature\_Extraction)}{36}{subsubsection*.24}%
+\contentsline {subsubsection}{فاز دوم: تنظیم دقیق (Fine-Tuning)}{36}{subsubsection*.26}%
+\contentsline {subsubsection}{جمع‌بندی عملکرد و سیر تکاملی مدل}{37}{subsubsection*.28}%
+\contentsline {section}{\numberline {6.3}نتایج ارزیابی مدل MobileNetV2}{38}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}نتایج ارزیابی مدل MobileNetV2}{38}{subsection.6.3.1}%
+\contentsline {section}{\numberline {6.4}ماتریس درهم‌ریختگی و تحلیل خطاها}{41}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}تحلیل ماتریس درهم‌ریختگی مدل MobileNetV2}{41}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}تحلیل منحنی‌های ROC و شاخص AUC مدل MobileNetV2}{42}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}تحلیل ماتریس درهم‌ریختگی مدل ResNet50}{43}{subsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.4.4}تحلیل منحنی‌های ROC و شاخص AUC مدل ResNet50}{44}{subsection.6.4.4}%
+\contentsline {section}{\numberline {6.5}مقایسه جامع عملکرد مدل‌ها}{45}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}مقایسه کیفی پیش‌بینی‌های ResNet50 و MobileNetV2 روی داده‌های آزمون}{46}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}مقایسه روند همگرایی و منحنی‌های دقت (Accuracy\_Curves)}{47}{subsection.6.5.2}%
+\contentsline {section}{\numberline {6.6}نمونه خروجی‌های کیفی و استنتاج روی داده‌های آزمون}{48}{section.6.6}%
+\contentsline {subsubsection}{ارزیابی کیفی پیش‌بینی‌های مدل ResNet50 روی داده‌های آزمون}{48}{subsubsection*.45}%
+\contentsline {section}{\numberline {6.7}جمع‌بندی فصل}{49}{section.6.7}%
+\contentsline {chapter}{\numberline {7}چالش‌های فنی، موانع اجرایی و راهکارهای مواجهه}{50}{chapter.7}%
+\contentsline {section}{\numberline {7.1}مقدمه}{50}{section.7.1}%
+\contentsline {section}{\numberline {7.2}چالش اول: شباهت بالای بین‌کلاسی و همپوشانی رفتاری\\ (High\_Inter\_class\_Similarity)}{50}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}تحلیل ابعاد چالش}{50}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}راهکار اتخاذشده}{50}{subsection.7.2.2}%
+\contentsline {section}{\numberline {7.3}چالش دوم: چالش بیش‌برازش (Overfitting) و عدم تعادل داده‌ها}{50}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}تحلیل ابعاد چالش}{51}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}راهکار اتخاذشده}{51}{subsection.7.3.2}%
+\contentsline {section}{\numberline {7.4}چالش سوم: فرار گرادیان و تخریب وزن‌ها در فاز Fine-Tuning}{51}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}تحلیل ابعاد چالش}{51}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}راهکار اتخاذشده}{51}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}چالش چهارم: شرایط نوری پیچیده، نور شدید مستقیم و سایه‌های کابین}{52}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}تحلیل ابعاد چالش}{52}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}راهکار اتخاذشده}{52}{subsection.7.5.2}%
+\contentsline {section}{\numberline {7.6}جمع‌بندی فصل}{52}{section.7.6}%
+\contentsline {chapter}{\numberline {8}نتیجه‌گیری، دستاوردها و پیشنهادات برای پژوهش‌های آتی}{53}{chapter.8}%
+\contentsline {section}{\numberline {8.1}مقدمه}{53}{section.8.1}%
+\contentsline {section}{\numberline {8.2}خلاصه پژوهش و دستاوردهای کلیدی}{53}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}خلاصه نتایج کمّی}{53}{subsection.8.2.1}%
+\contentsline {section}{\numberline {8.3}بحث و موازنه دقت و کارایی محاسباتی (Trade\_off\_Analysis)}{54}{section.8.3}%
+\contentsline {section}{\numberline {8.4}پیشنهادات برای پژوهش‌های آتی}{54}{section.8.4}%
+\contentsline {section}{\numberline {8.5}سخن پایانی}{54}{section.8.5}%
