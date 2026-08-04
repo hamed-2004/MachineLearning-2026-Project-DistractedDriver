@@ -1,0 +1,30 @@
+{
+  "img_size": 224,
+  "batch_size": 32,
+  "num_classes": 10,
+  "augmentation": {
+    "rescale": 0.00392156862745098,
+    "rotation_range": 20,
+    "width_shift_range": 0.15,
+    "height_shift_range": 0.15,
+    "zoom_range": 0.15,
+    "horizontal_flip": false,
+    "brightness_range": [
+      0.8,
+      1.2
+    ],
+    "fill_mode": "nearest"
+  },
+  "class_weights": {
+    "c0": 0.9002831257078143,
+    "c1": 0.9796056685150955,
+    "c2": 0.9641600970285021,
+    "c3": 0.96591737545565,
+    "c4": 0.9796056685150955,
+    "c5": 0.9850681536555143,
+    "c6": 0.9641600970285021,
+    "c7": 1.1496023138105567,
+    "c8": 1.1496023138105567,
+    "c9": 1.0172104926423544
+  }
+}
