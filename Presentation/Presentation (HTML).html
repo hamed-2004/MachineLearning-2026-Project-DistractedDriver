@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ارائه پروژه: تشخیص حواس‌پرتی راننده با شبکه‌های عمیق</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+            --accent-color: #38bdf8;
+            --highlight-color: #fca5a5;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Vazirmatn', sans-serif !important;
+            color: #f8fafc;
+        }
+
+        .reveal {
+            font-family: 'Vazirmatn', sans-serif !important;
+        }
+
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Vazirmatn', sans-serif !important;
+            font-weight: 800;
+            background: linear-gradient(to left, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .reveal h1 { font-size: 2.2em; line-height: 1.3; }
+        .reveal h2 { font-size: 1.5em; border-bottom: 2px solid rgba(56, 189, 248, 0.3); padding-bottom: 12px; }
+
+        .reveal p, .reveal li {
+            text-align: right;
+            direction: rtl;
+            font-size: 0.85em;
+            line-height: 1.9;
+            color: #cbd5e1;
+        }
+
+        .reveal ul {
+            display: block;
+            margin-right: 1.5em;
+            list-style-type: none;
+        }
+
+        .reveal ul li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .reveal ul li::before {
+            content: "■";
+            color: var(--accent-color);
+            position: absolute;
+            right: -1.3em;
+            top: 0.3em;
+            font-size: 0.8em;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            text-align: right;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: stretch;
+            margin-top: 20px;
+        }
+
+        .img-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .img-card img {
+            max-height: 38vh;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 0 auto;
+        }
+
+        .img-caption {
+            font-size: 0.6em !important;
+            color: #94a3b8 !important;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        .speaker-notes {
+            background: rgba(14, 165, 233, 0.1);
+            border-right: 4px solid var(--accent-color);
+            padding: 12px 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .speaker-notes p {
+            font-size: 0.75em;
+            color: #bae6fd;
+            margin: 0;
+            font-weight: 500;
+        }
+        /* ========================================= */
+        /* استایل‌های سفارشی دکمه‌های کنترل و شماره اسلاید */
+        /* ========================================= */
+
+        /* ۱. اصلاح و زیباسازی شماره اسلاید (Slide Number) */
+        .reveal .slide-number {
+            background: rgba(15, 23, 42, 0.75) !important; /* پس‌زمینه شیشه‌ای تاریک */
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(56, 189, 248, 0.4) !important; /* حاشیه نئونی و درخشان */
+            color: #38bdf8 !important; /* رنگ متن هم‌خوان با تم */
+            font-family: 'Vazirmatn', sans-serif !important;
+            font-weight: 800 !important;
+            font-size: 16px !important;
+            padding: 8px 18px !important;
+            border-radius: 30px !important; /* حالت بیضی شکل بسیار شیک (Pill) */
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2) !important;
+            
+            /* حل قطعی مشکل برعکس شدن اعداد در حالت RTL */
+            direction: ltr !important; 
+            
+            /* تنظیم موقعیت به گوشه پایین سمت چپ (برای عدم تداخل با فلش‌ها) */
+            bottom: 25px !important;
+            right: auto !important;
+            left: 25px !important;
+        }
+
+        /* حذف خط زیر اعداد (Underline) */
+        .reveal .slide-number a {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        /* ۲. زیباسازی دکمه‌های جهت‌نما (Controls Arrows) */
+        .reveal .controls {
+            bottom: 20px !important;
+            right: 25px !important;
+            left: auto !important;
+        }
+
+        .reveal .controls .controls-arrow {
+            color: #38bdf8 !important; /* رنگ فلش‌ها متناسب با تم */
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        /* افکت درخشش نئونی (Glow) هنگام رفتن موس روی فلش‌ها */
+        .reveal .controls .controls-arrow:hover {
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 12px #38bdf8) !important;
+            transform: scale(1.15); /* کمی بزرگ‌نمایی جذاب */
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+    <div class="slides">
+
+        <section>
+            <h1>سیستم هوشمند تشخیص حواس‌پرتی راننده</h1>
+            <h3>با رویکرد یادگیری انتقالی در شبکه‌های عصبی عمیق</h3>
+            
+            <div class="glass-box" style="margin-top: 40px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <p><strong>🏛 دانشگاه:</strong> صنعتی خواجه نصیرالدین طوسی</p>
+                        <p><strong>👨‍🏫 استاد درس:</strong> دکتر نیکوفرد</p>
+                        <p><strong>📅 نیمسال تحصیلی:</strong> ۱۴۰۴ - ۱۴۰۵</p>
+                    </div>
+                    <div>
+                        <p><strong>👥 اعضای تیم پروژه:</strong></p>
+                        <p style="padding-right: 20px; margin: 0;">• حامد بهروزی مقدم (<span class="highlight">۴۰۲۱۵۶۳۳</span>)</p>
+                        <p style="padding-right: 20px; margin: 0;">• امیرحسین شقاقی (<span class="highlight">۴۰۱۱۹۸۴۳</span>)</p>
+                        <p style="margin-top: 10px;"><strong>📊 مجموعه داده:</strong> State Farm (Kaggle)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>۱. بیان مسئله و اهمیت هوشمندسازی کابین</h2>
+            <div class="glass-box">
+                <ul>
+                    <li><strong>ضرورت مسئله:</strong> بر اساس گزارش WHO، حواس‌پرتی عامل بیش از ۲۰٪ از تصادفات جاده‌ای است. سامانه‌های بینایی ماشین داخل کابین می‌توانند با هشدار به‌موقع جان انسان‌ها را نجات دهند.</li>
+                    <li><strong>هدف سیستم:</strong> طبقه‌بندی خودکار تصاویر راننده به <span class="highlight">۱۰ کلاس رفتاری مجزا</span>:</li>
+                </ul>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8em; margin-top: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+                    <div>
+                        <p style="margin:5px 0;"><strong>c0:</strong> رانندگی عادی (Normal)</p>
+                        <p style="margin:5px 0;"><strong>c1:</strong> پیامک - دست راست</p>
+                        <p style="margin:5px 0;"><strong>c2:</strong> مکالمه تلفنی - دست راست</p>
+                        <p style="margin:5px 0;"><strong>c3:</strong> پیامک - دست چپ</p>
+                        <p style="margin:5px 0;"><strong>c4:</strong> مکالمه تلفنی - دست چپ</p>
+                    </div>
+                    <div>
+                        <p style="margin:5px 0;"><strong>c5:</strong> تنظیم رادیو (Radio)</p>
+                        <p style="margin:5px 0;"><strong>c6:</strong> نوشیدن مایعات (Drinking)</p>
+                        <p style="margin:5px 0;"><strong>c7:</strong> دسترسی به صندلی عقب</p>
+                        <p style="margin:5px 0;"><strong>c8:</strong> مرتب‌سازی مو و آرایش</p>
+                        <p style="margin:5px 0;"><strong>c9:</strong> صحبت با سرنشین دیگر</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>۲. تحلیل داده‌ها (EDA): بررسی ابعاد تصاویر</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>حجم مجموعه داده:</strong> شامل ۲۲,۴۲۴ تصویر رنگی آموزشی با وضوح بالا.</li>
+                        <li><strong>پراکندگی ابعاد:</strong> بررسی‌ها نشان داد تمامی تصاویر دارای رزولوشن ثابت <span class="highlight">640 در 480 پیکسل</span> (نسبت 4:3) هستند.</li>
+                        <li><strong>الزام شبکه‌های عمیق:</strong> برای تطابق با معماری‌های ImageNet (مثل ResNet و MobileNet)، نیاز است تمامی فریم‌ها در مرحله پیش‌پردازش به سایز استاندارد <span class="highlight">224 در 224</span> تغییر اندازه داده شوند.</li>
+                        <li><strong>علاوه بر ابعاد، توزیع فراوانی کلاس‌ها هم در این تصویر مشخص است.</strong> </li>
+                    </ul>
+                    <div class="speaker-notes">
+                        <p>💡 نکته: به دلیل یکسان بودن نسبت ابعاد در تمامی داده‌ها، عملیات Resize بدون نیاز به Crop پیچیده باعث حفظ اطلاعات حیاتی تصویر می‌شود.</p>
+                    </div>
+                </div>
+                <div class="img-card">
+                    <img src="1.PNG" alt="تحلیل ابعاد">
+                    <div class="img-caption">تصویر ۱: توزداشبورد جامع تحلیل اکتشافی (EDA) و توزیع کلاس‌ها </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>۳. تحلیل کیفیت بصری و ارزیابی نویز</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <img src="1.PNG" alt="داشبورد کیفیت">
+                    <div class="img-caption">تصویر ۲: داشبورد تحلیل جامع کیفیت روشنایی، کنتراست و بلور شدگی</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>سنجش وضوح (Sharpness):</strong> با محاسبه واریانس فیلتر لاپلاسین (آستانه کمتر از 30 به عنوان تار) انجام شد.</li>
+                        <li><strong>روشنایی و کنتراست:</strong> تحلیل توزیع پیکسلی نشان داد تغییرات نوری در کابین زیاد است (روز/سایه)، اما تصاویر کاملاً سیاه یا سوخته نداریم.</li>
+                        <li><strong>نتیجه بررسی سلامت:</strong> داده‌ها به شدت تمیز هستند؛ <span class="highlight">بدون عکس خراب (Corrupted)</span> و فقط ۱ عکس بسیار تار شناسایی شد.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>۴. بررسی بصری و چالش‌های درون‌کابین</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>زاویه دید:</strong> دوربین به صورت ثابت در سمت راست راننده و کمی بالاتر از داشبورد نصب شده است.</li>
+                        <li><strong>چالش‌های استخراج ویژگی:</strong> 
+                            <br>- تنوع بالای فیزیک رانندگان (قد، لباس، عینک).
+                            <br>- انسداد (Occlusion): مخفی شدن دست در پشت فرمان.
+                            <br>- شرایط نوری متغیر به دلیل تابش آفتاب از پنجره‌ها.
+                        </li>
+                    </ul>
+                </div>
+                <div class="img-card">
+                    <img src="3.PNG" alt="نمونه تصاویر">
+                    <div class="img-caption">تصویر ۳: تنوع حالات رانندگی، پوشش و نور در کلاس‌های ده‌گانه</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>۵. تحلیل شباهت بصری کلاس‌ها (Visual Similarity)</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <img src="4.png" alt="ماتریس شباهت">
+                    <div class="img-caption">تصویر ۴: ماتریس شباهت کسینوسی مبتنی بر هیستوگرام RGB</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>دلیل اهمیت:</strong> محیط پس‌زمینه (کابین) در همه عکس‌ها ثابت است، بنابراین مدل باید تفاوت‌های ریز رفتاری را یاد بگیرد.</li>
+                        <li><strong>کلاس‌های خلط‌آفرین (شباهت بالای ۸۵٪):</strong>
+                            <br>• پیامک با دست راست (c1) ↔ تلفن با دست راست (c2)
+                            <br>• پیامک با دست چپ (c3) ↔ تلفن با دست چپ (c4)
+                        </li>
+                        <li><strong>راهکار:</strong> مدل باید توجه ویژه‌ای به موقعیت دقیق دست‌ها نسبت به گوش و فرمان داشته باشد.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+   <!-- اسلاید ۶: استراتژی ضد نشت داده (Anti-Leakage) -->
+        <section>
+            <h2>۶. استراتژی حیاتی ضد-نشت (Anti-Leakage)</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <img src="5.png" alt="توزیع متوازن سازی کلاس ها">
+                    <div class="img-caption">تصویر ۵: توزیع کلاس‌ها قبل و بعد از متوازن‌سازی هوشمند</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>معضل نشت داده:</strong> مجموعه داده شامل <span class="highlight">۲۶ راننده (Subject)</span> است. استفاده از تقسیم تصادفی (Random Split) باعث می‌شود شبکه به جای یادگیری «حواس‌پرتی»، چهره و لباس راننده را حفظ کند و دقت کاذب ۹۹٪ بدهد!</li>
+                        <li><strong>راهکار GroupShuffleSplit:</strong> تفکیک داده‌ها بر اساس شناسه راننده انجام شد. هیچ راننده‌ای به طور مشترک در مجموعه‌های آموزش و اعتبارسنجی حضور ندارد.</li>
+                        <li><strong>متوازن‌سازی هوشمند:</strong> جبران کمبود تصاویر در برخی کلاس‌ها تا سقف ۲۳۰۰ عکس به کمک افزونه‌سازی (Augmentation).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۷: راستی‌آزمایی عدم تکرار (Duplicate Detection) -->
+<!-- اسلاید ۷: راستی‌آزمایی عدم تکرار (Duplicate Detection) -->
+        <section>
+            <h2>۷. راستی‌آزمایی عدم تکرار (Duplicate Detection)</h2>
+            <div class="glass-box" style="margin-top: 50px; padding: 40px 30px;">
+                <ul style="font-size: 1.15em; line-height: 2.2;">
+                    <li><strong>الگوریتم MD5:</strong> برای بررسی کپی‌های دقیق پیکسلی استفاده شد و اطمینان کامل حاصل گردید که هیچ فایلِ کاملاً یکسانی بین مجموعه‌های Train و Test وجود ندارد.</li>
+                    <li style="margin-top: 20px;"><strong>الگوریتم pHash (هش ادراکی):</strong> تصاویری که از نظر بصری بسیار شبیه به هم بودند (مانند فریم‌های متوالی و پشت سر همِ یک ویدیو) با فاصله هامینگ بسیار کم شناسایی شدند.</li>
+                    <li style="margin-top: 20px;"><strong>نتیجه‌گیری:</strong> خروجی این الگوریتم‌ها ثابت کرد که استراتژیِ جداسازیِ اصولی بر اساس شناسه راننده (GroupShuffleSplit)، کاملاً مانع از کالیبراسیونِ غلطِ مدل روی فریم‌های همزاد شده است.</li>
+                </ul>
+            </div>
+            <div class="speaker-notes" style="margin-top: 30px; text-align: center; border-left: 4px solid var(--accent-color); border-right: none;">
+                <p>💡 <strong>نکته فنی:</strong> خروجی این بخش به صورت لاگ‌های پردازشی در کنسول تایید شد و خروجی تصویری نداشتیم.</p>
+            </div>
+        </section>
+        <!-- اسلاید ۸: استراتژی داده‌افزایی (Data Augmentation) -->
+        <section>
+            <h2>۸. استراتژی داده‌افزایی (Data Augmentation)</h2>
+            <div class="glass-box" style="margin-bottom: 15px; padding: 12px;">
+                <p style="font-size: 0.78em; margin: 0;"><strong>⚠️ چالش چپ و راست:</strong> پارامتر <span class="highlight">Horizontal Flip</span> حتماً باید غیرفعال (False) بماند. قرینه‌سازی افقی باعث تبدیل دست راست (کلاس c1) به دست چپ (کلاس c3) شده و لیبل داده‌ها را تخریب می‌کند!</p>
+            </div>
+            <div class="grid-container">
+                <div class="img-card">
+                    <img src="7.png" alt="Augmentation C8">
+                    <div class="img-caption">تصویر ۷: پیش‌نمایش داده‌افزایی کلاس c8 (آرایش مو و صورت)</div>
+                </div>
+                <div class="img-card">
+                    <img src="6.png" alt="Augmentation C0">
+                    <div class="img-caption">تصویر ۸: پیش‌نمایش داده‌افزایی کلاس c0 (رانندگی عادی و تغییرات روشنایی)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۹: معماری مدل اول MobileNetV2 -->
+        <section>
+            <h2>۹. معماری مدل اول: MobileNetV2 سفارشی</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <!-- عکس اصلاح شده: بلوک دیاگرام معماری -->
+                    <img src="29.png" alt="معماری MobileNetV2">
+                    <div class="img-caption">تصویر ۹: بلوک‌دیاگرام لایه‌های افزوده‌شده به هسته MobileNetV2</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>چرا MobileNet؟</strong> استفاده از کانولوشن‌های عمقی-جداپذیر (Depthwise Separable) به جای کانولوشن استاندارد، حجم پارامترها را به‌شدت کاهش داده و مناسب پردازش بلادرنگ روی برد خودرو است.</li>
+                        <li><strong>تغییرات در Classifier Head:</strong>
+                            <br>1. لایه Global Average Pooling
+                            <br>2. لایه Dense(512) + Dropout(0.5)
+                            <br>3. لایه Dense(256) + Dropout(0.3)
+                            <br>4. لایه Softmax نهایی برای ۱۰ کلاس
+                        </li>
+                        <li><strong>منظم‌سازی (Regularization):</strong> استفاده از جریمه L2 (میزان 1e-4) در لایه‌های متراکم.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۱۰: پایپلاین و آماده‌سازی نهایی داده‌ها -->
+        <section>
+            <h2>۱۰. پایپلاین و آماده‌سازی نهایی داده‌ها</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>مقیاس‌دهی (Rescaling):</strong> تبدیل شدت پیکسل‌ها از بازه 0 تا 255 به بازه استاندارد 0 تا 1 در قالب Float32.</li>
+                        <li><strong>انکودینگ:</strong> نگاشت لیبل‌ها به صورت بردارهای One-Hot برای محاسبه بهینه خطای آنتروپی متقاطع.</li>
+                        <li><strong>اندازه دسته (Batch Size):</strong> تنظیم روی <span class="highlight">۱۲۸</span> جهت استفاده حداکثری از توان موازی‌سازی پردازنده‌های گرافیکی (GPU).</li>
+                    </ul>
+                </div>
+                <div class="img-card">
+                    <img src="8.png" alt="پایپلاین مدل">
+                    <div class="img-caption"> «تصویر ۱۰: تایید صحت بچ خروجی از ژنراتور پس از پیش‌پردازش و نرمال‌سازی» MobileNetV2 (مرجع پایپلاین آموزشی)</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>جمع‌بندی بخش پیش‌پردازش </h2>
+            <div class="glass-box">
+                <table style="width: 100%; text-align: right; border-collapse: collapse; font-size: 0.85em;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--accent-color); color: var(--accent-color);">
+                            <th style="padding: 10px;">چالش / موضوع</th>
+                            <th style="padding: 10px;">راهکار پیاده‌سازی شده در کد</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <td style="padding: 10px; font-weight: bold;">نشت داده میان رانندگان</td>
+                            <td style="padding: 10px;">استفاده از <span class="highlight">GroupShuffleSplit</span> برای جداسازی کامل ۲۶ راننده.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <td style="padding: 10px; font-weight: bold;">شباهت کلاس چپ و راست</td>
+                            <td style="padding: 10px;">لغو کامل قرینه‌سازی افقی (<span class="highlight">Horizontal_Flip = False</span>).</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <td style="padding: 10px; font-weight: bold;">نامتوازن بودن کلاس‌ها</td>
+                            <td style="padding: 10px;">داده‌افزایی هوشمند هدفمند (تارگت: ۲۳۰۰ عکس در هر کلاس).</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; font-weight: bold;">محدودیت سخت‌افزار خودرو</td>
+                            <td style="padding: 10px;">استفاده از معماری سبک‌وزن <span class="highlight">MobileNetV2</span>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="speaker-notes" style="margin-top: 25px;">
+                <p>مرحله بعدی: شروع فاز آموزش دو مرحله‌ای (استخراج ویژگی + Fine-Tuning) روی شبکه‌ها و استخراج نتایج.</p>
+            </div>
+        </section>
+                <section>
+            <h2>نگاهی اجمالی به عملکرد کلی MobileNetV2</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>پیش‌نمایش نتایج:</strong> پیش از ورود به بررسی دقیقِ فازهای آموزش، در این داشبورد نمایی کلی از خروجی نهایی مدل را در طول هر ۲۳ ایپاک مشاهده می‌کنید.</li>
+                        <li><strong>دقت نهایی:</strong> مدل موفق شده با وجود سبک بودن، به دقت بسیار مطلوب <span class="highlight">۹۴.۴۲٪</span> روی داده‌های اعتبارسنجی دست یابد.</li>
+                        <li><strong>پایداری آموزش:</strong> نمودارها نشان‌دهنده عدم وجود بیش‌برازش (Overfitting) مخرب و اثربخشیِ استراتژیِ تنظیم نرخ یادگیری (نمودار سبز رنگ) هستند.</li>
+                    </ul>
+                </div>
+                <div class="img-card">
+                    <!-- عکس داشبورد 4تایی که درخواست کردید اینجا قرار گرفت -->
+                    <img src="9.png" alt="داشبورد متریک‌های آموزشی">
+                    <div class="img-caption">تصویر: داشبورد جامع متریک‌های آموزش، خطا و نرخ یادگیری MobileNetV2</div>
+                </div>
+            </div>
+        </section>
+       <!-- اسلاید ۱۱: آموزش فاز اول MobileNetV2 -->
+        <section>
+            <h2>۱۱. آموزش MobileNetV2 (فاز اول: استخراج ویژگی)</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>استراتژی آموزش:</strong> در فاز اول (۱۵ ایپاک)، پایه‌های مدل (Backbone) که روی ImageNet آموزش دیده بودند، کاملاً فریز (Frozen) شدند تا وزن‌هایشان تخریب نشود.</li>
+                        <li><strong>نرخ یادگیری (Learning Rate):</strong> شروع با 1e-3 (0.001) و استفاده از الگوریتم بهینه‌ساز Adam.</li>
+                        <li><strong>عملکرد:</strong> مدل با سرعت خوبی همگرا شد و به دقت اعتبارسنجی <span class="highlight">۸۹.۷۶٪</span> و دقت Top-3 برابر با <span class="highlight">۹۸.۰۴٪</span> رسید.</li>
+                        <li><strong>نتیجه:</strong> لایه‌های طبقه‌بند (Classifier Head) کاملاً با شکل کلی داده‌های حواس‌پرتی آشنا شدند.</li>
+                    </ul>
+                </div>
+                <div class="img-card">
+                    <!-- عکس درست: منحنی های فاز 1 -->
+                    <img src="10.png" alt="نمودارهای فاز 1">
+                    <div class="img-caption">تصویر ۱۱: منحنی‌های یادگیری (Accuracy, Loss, Top-3) در فاز اول (۱۵ ایپاک)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۱۲: آموزش فاز دوم MobileNetV2 -->
+        <section>
+            <h2>۱۲. آموزش MobileNetV2 (فاز دوم: تنظیم دقیق / Fine-Tuning)</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <!-- عکس درست: منحنی های فاز 2 -->
+                    <img src="11.png" alt="نمودارهای فاز 2">
+                    <div class="img-caption">تصویر ۱۲: منحنی‌های یادگیری فاز دوم (تنظیم دقیق - ۸ ایپاک)</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>آزادسازی لایه‌ها:</strong> لایه‌های پایانی شبکه اصلی (از لایه ۱۰۰ به بعد) Unfreeze شدند تا ویژگی‌های اختصاصی کابین خودرو را یاد بگیرند.</li>
+                        <li><strong>کاهش شدید نرخ یادگیری:</strong> برای جلوگیری از پدیده فراموشی فاجعه‌بار (Catastrophic Forgetting)، نرخ یادگیری به 1e-5 کاهش یافت.</li>
+                        <li><strong>جهش عملکرد:</strong> دقت اعتبارسنجی (Validation) به <span class="highlight">۹۴.۴۲٪</span> ارتقا یافت و خطای اعتبارسنجی تا حد 0.28 پایین آمد.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۱۳: داشبورد جامع و تکامل آموزش -->
+        <section>
+            <h2>۱۳. تکامل کلی آموزش و زمان‌بندی نرخ یادگیری</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>نمای کلی (Complete Evolution):</strong> اتصال نمودارهای فاز ۱ و ۲ نشانگر تاثیر شگرف Fine-Tuning در ایپاک ۱۶ است (جهش نمودار).</li>
+                        <li><strong>کال‌بک‌ها (Callbacks):</strong> 
+                            <br>• <strong>ReduceLROnPlateau:</strong> با گیر کردن مدل در فلات، نرخ یادگیری نصف شد (سقوط پله‌ای در نمودار سبز).
+                            <br>• <strong>EarlyStopping:</strong> برای جلوگیری از Overfitting.
+                            <br>• <strong>ModelCheckpoint:</strong> ذخیره خودکار بهترین وزن‌ها.
+                        </li>
+                    </ul>
+                </div>
+                <div class="img-card">
+                    <!-- عکس درست: تکامل 23 ایپاک -->
+                    <img src="13.png" alt="داشبورد متریک کامل">
+                    <div class="img-caption">تصویر ۱۳: تکامل متریک‌ها و رفتار نرخ یادگیری در طول ۲۳ ایپاک</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۱۴: مقایسه فازها و ماتریس درهم‌ریختگی -->
+        <section>
+            <h2>۱۴. ارزیابی نهایی MobileNetV2 (ماتریس درهم‌ریختگی)</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <!-- عکس درست: نمودار میله ای مقایسه فازها -->
+                    <img src="12.png" alt="مقایسه فاز 1 و 2">
+                    <div class="img-caption">تصویر ۱۴: مقایسه جهش عملکرد از فاز ۱ (آبی) به فاز ۲ (صورتی)</div>
+                </div>
+                <div class="img-card">
+                    <!-- عکس درست: ماتریس درهم ریختگی -->
+                    <img src="14.png" alt="ماتریس درهم ریختگی">
+                    <div class="img-caption">تصویر ۱۵: ماتریس درهم‌ریختگی (Confusion Matrix) روی اعتبارسنجی</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۱۵: منحنی ROC و پیش‌بینی روی تست -->
+        <section>
+            <h2>۱۵. منحنی ROC و تست عملی MobileNetV2</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>منحنی ROC (One-vs-Rest):</strong> سطح زیر نمودار (Macro AUC) برای مدل MobileNetV2 بسیار نزدیک به 1.00 است که نشان‌دهنده قدرت بالای تمایز بین ۱۰ کلاس است.</li>
+                        <li><strong>پیش‌بینی روی داده‌های Test:</strong> مدل روی تصاویری که هرگز در طول آموزش ندیده بود، با سطح اطمینان (Confidence) بالای ۹۰٪ به درستی کلاس‌ها را پیش‌بینی کرد.</li>
+                    </ul>
+                </div>
+                <div class="img-card" style="display: grid; grid-template-rows: 1fr 1fr; gap: 10px; background: transparent; box-shadow: none; border: none;">
+                    <!-- عکس های درست: ROC و پیش بینی ها -->
+                    <img src="15.png" alt="ROC Curves" style="max-height: 20vh; border-radius: 8px; box-shadow: var(--card-shadow);">
+                    <img src="16.png" alt="پیش بینی روی تست" style="max-height: 20vh; border-radius: 8px; box-shadow: var(--card-shadow);">
+                    <div class="img-caption">تصاویر ۱۶ و ۱۷: منحنی ROC (بالا) و پیش‌بینی روی ۱۰ نمونه تصادفی Test (پایین)</div>
+                </div>
+            </div>
+        </section>
+
+       
+<!-- اسلاید ۱۸: معرفی مدل ResNet50 -->
+        <section>
+            <h2>۱۶. ارتقای رویکرد: معرفی معماری ResNet50</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <!-- عکس درست: معماری شبکه ResNet50 -->
+                    <img src="30.png" alt="معماری ResNet50">
+                    <div class="img-caption">تصویر ۱۹: دیاگرام معماری شبکه ResNet50 با لایه‌های Classification سفارشی</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>چرا شبکه ResNet50؟</strong> برای دستیابی به دقت‌های بالاتر، از شبکه بسیار عمیق‌تر ResNet50 استفاده کردیم. این شبکه با استفاده از اتصالات میان‌بر (Residual Connections) مشکل محوشدگی گرادیان (Vanishing Gradient) را حل می‌کند.</li>
+                        <li><strong>تغییر پیش‌پردازش:</strong> برخلاف MobileNet، ورودی شبکه ResNet50 نیاز به تابع `preprocess_input` مخصوص خود دارد (پیکسل‌ها ضرب در 255.0 می‌شوند).</li>
+                        <li><strong>تنظیمات یکسان:</strong> اندازه بچ (128)، توابع منظم‌سازی L2 و دراپ‌اوت (Dropout) دقیقاً مشابه مدل قبلی تنظیم شدند تا مقایسه عادلانه باشد.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۱۹: فاز اول آموزش ResNet50 -->
+        <section>
+            <h2>۱۷. آموزش ResNet50 (فاز اول: استخراج ویژگی)</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>قدرت شبکه‌های بسیار عمیق:</strong> تنها در همان فاز اول (فریز بودن پایه‌ها) طی ۱۵ ایپاک، مدل با سرعت خیره‌کننده‌ای همگرا شد.</li>
+                        <li><strong>شکستن مرزها:</strong> دقت اعتبارسنجی (Validation Accuracy) در همان فاز اول به <span class="highlight">۹۹.۵۲٪</span> رسید!</li>
+                        <li><strong>دقت Top-3:</strong> عملاً به ۱۰۰٪ (۹۹.۹۸٪) میل کرد که نشان از ظرفیت بسیار بالای ResNet50 برای درک الگوهای پیچیده و بافت کابین خودرو دارد.</li>
+                    </ul>
+                </div>
+                <div class="img-card">
+                    <!-- عکس درست: منحنی فاز 1 شبکه ResNet50 -->
+                    <img src="20.png" alt="فاز اول ResNet50">
+                    <div class="img-caption">تصویر ۲۰: منحنی‌های یادگیری فاز اول مدل ResNet50 (سرعت بالای همگرایی)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۲۰: آموزش فاز دوم ResNet50 -->
+        <section>
+            <h2>۱۸. آموزش ResNet50 (فاز دوم: تنظیم دقیق / Fine-Tuning)</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <!-- عکس درست: منحنی فاز 2 شبکه ResNet50 -->
+                    <img src="21.png" alt="نمودارهای فاز ۲ ResNet50">
+                    <div class="img-caption">تصویر ۲۱: منحنی‌های یادگیری فاز دوم (تنظیم دقیق - ۸ ایپاک)</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>استراتژی آزادسازی:</strong> لایه‌های شبکه از بلوک ۱۰۰ به بعد آزاد شدند تا شبکه بتواند الگوهای پیچیده‌تر (مانند تفاوت گوشی و دست خالی) را کاملاً درونی‌سازی کند.</li>
+                        <li><strong>دقت خیره‌کننده:</strong> در پایان این فاز، دقت اعتبارسنجی (Validation Accuracy) به عدد بی‌نظیر <span class="highlight">۹۹.۵۸٪</span> رسید!</li>
+                        <li><strong>دقت Top-3:</strong> برابر با ۹۹.۹۸٪ ثبت شد که نشان می‌دهد مدل تقریباً در ۱۰۰٪ مواقع، کلاس صحیح را در بین ۳ حدس اول خود قرار داده است.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۲۱: واسط -->
+        <section>
+            <h2>تکمیل تحلیل MobileNetV2 و ورود به قلمرو ResNet50</h2>
+            <p style="text-align: center; font-size: 1.2em; margin-top: 30px;">
+                تا به اینجا دیدیم که مدل سبک‌وزن ما (MobileNetV2) دقت بسیار خوب ~۹۴.۵٪ را ثبت کرد.<br>
+                همچنین مدل سنگین‌وزن (ResNet50) در همان قدم‌های اول نوید دقت‌های بالای ۹۹٪ را داد.
+            </p>
+            <h4 style="margin-top: 50px; color: var(--accent-color); text-align: center;">در بخش پایانی، به سراغ نتایج نهایی ResNet50 و مقایسه هیجان‌انگیز این دو شبکه می‌رویم...</h4>
+        </section>
+
+        <!-- اسلاید ۲۲: تکامل آموزش و عملکرد کلی (ResNet50) -->
+        <section>
+            <h2>۱۹. تکامل آموزش و عملکرد کلی (ResNet50)</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>پایداری آموزش:</strong> برخلاف شبکه‌های کم‌عمق، نمودار خطای اعتبارسنجی (Validation Loss) در ResNet50 هیچ نوسان شدیدی ندارد و روی عدد 0.16 کاملاً پایدار شده است.</li>
+                        <li><strong>مقایسه دو فاز:</strong> جهش دقت از فاز اول به دوم محسوس است، اما به دلیل قدرت بالای پایه‌های ResNet، حتی فاز اول نیز دقت بالای ۹۸٪ را ثبت کرده بود.</li>
+                    </ul>
+                </div>
+                <div class="img-card" style="display: grid; grid-template-rows: 1fr 1fr; gap: 10px; background: transparent; box-shadow: none; border: none;">
+                    <!-- عکس های درست: تکامل 23 ایپاک و مقایسه میله ای فازهای ResNet50 -->
+                    <img src="23.png" alt="تکامل ResNet50" style="max-height: 20vh; border-radius: 8px; box-shadow: var(--card-shadow);">
+                    <img src="22.png" alt="مقایسه میله ای" style="max-height: 20vh; border-radius: 8px; box-shadow: var(--card-shadow);">
+                    <div class="img-caption">تصاویر ۲۳ و ۲۴: تکامل ۲۳ ایپاک آموزش (بالا) و نمودار میله‌ای مقایسه بهترین عملکرد فازها (پایین)</div>
+                </div>
+            </div>
+        </section>
+<!-- اسلاید ۲۰: ارزیابی نهایی و ماتریس درهم ریختگی ResNet -->
+        <section>
+            <h2>۲۰. ارزیابی نهایی و ماتریس درهم‌ریختگی (ResNet50)</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>قطر اصلی ماتریس:</strong> تمرکز مطلق روی قطر اصلی نشان می‌دهد که خطاهای طبقه‌بندی (Misclassifications) به شکل چشمگیری در این مدل کاهش یافته‌اند.</li>
+                        <li><strong>منحنی ROC و AUC:</strong> در تمامی ۱۰ کلاس، سطح زیر نمودار (AUC) تقریباً برابر با <span class="highlight">1.000</span> است که نشان از قابلیت تفکیک‌پذیری کامل مدل دارد.</li>
+                    </ul>
+                    <div class="speaker-notes" style="margin-top: 15px;">
+                        <p>💡 <strong>نکته دفاع:</strong> با مقایسه این ماتریس با مدل قبلی، متوجه می‌شویم که ResNet50 چالش کلاس‌های «تلفن راست» و «پیامک راست» را کاملاً حل کرده است.</p>
+                    </div>
+                </div>
+                <div class="img-card" style="display: grid; grid-template-rows: 1fr 1fr; gap: 10px; background: transparent; box-shadow: none; border: none;">
+                    <!-- عکس های درست: ماتریس و ROC -->
+                    <img src="24.png" alt="ماتریس درهم ریختگی ResNet" style="max-height: 22vh; border-radius: 8px; box-shadow: var(--card-shadow);">
+                    <img src="25.png" alt="منحنی ROC ResNet" style="max-height: 22vh; border-radius: 8px; box-shadow: var(--card-shadow);">
+                    <div class="img-caption">تصاویر ۲۴ و ۲۵: ماتریس درهم‌ریختگی (بالا) و منحنی‌های ROC چندکلاسه (پایین)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۲۱: پیش‌بینی روی داده تست ResNet -->
+        <section>
+            <h2>۲۱. تست عملی و استنتاج مدل (ResNet50)</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <!-- عکس درست: پیش بینی های ResNet50 -->
+                    <img src="26.png" alt="تست روی نمونه ها">
+                    <div class="img-caption">تصویر ۲۶: پیش‌بینی قدرتمند مدل ResNet50 با درصد اطمینان بالا روی ۱۰ نمونه تست</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>پیش‌بینی تصاویر جدید:</strong> مدل روی مجموعه تصادفی از تصاویر Test (که لیبل آن‌ها مخفی بوده) ارزیابی شد.</li>
+                        <li><strong>اطمینان شبکه (Confidence):</strong> برخلاف مدل‌های ضعیف که با درصد اطمینان شکننده پیش‌بینی می‌کنند، ResNet50 در اکثریت قریب به اتفاق موارد با اطمینان <span class="highlight">بالای ۹۹٪</span> رفتار راننده را طبقه‌بندی کرده است.</li>
+                        <li><strong>پیش‌پردازش متفاوت:</strong> در زمان استنتاج، ورودی‌ها دقیقاً مشابه پایپلاین آموزش با تابع مخصوص <code>resnet_preprocess</code> مقیاس‌دهی شده‌اند.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۲۲: مقایسه رودررو (Accuracy Curves) -->
+        <section>
+            <h2>۲۲. مقایسه جامع: MobileNetV2 در برابر ResNet50</h2>
+            <div class="grid-container">
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>سرعت همگرایی:</strong> همان‌طور که در نمودار پیداست، ResNet50 از همون ایپاک‌های ابتدایی با اختلاف زیادی بالاتر از MobileNet قرار گرفته است.</li>
+                        <li><strong>دقت نهایی:</strong> 
+                            <br>• ResNet50: ~۹۹.۵٪
+                            <br>• MobileNetV2: ~۹۴.۴٪
+                        </li>
+                        <li><strong>نتیجه تحلیلی:</strong> عمق شبکه و استفاده از بلوک‌های پسماند (Residual) در ResNet50 باعث استخراج ویژگی‌های بسیار غنی‌تری از بافت و پیکسل‌های تصویر شده است.</li>
+                    </ul>
+                </div>
+                <div class="img-card">
+                    <!-- عکس درست: نمودار مقایسه ای منحنی ها -->
+                    <img src="28.png" alt="مقایسه منحنی های دقت">
+                    <div class="img-caption">تصویر ۲۸: رقابت رودررو؛ دقت ResNet (بنفش) در برابر MobileNet (قرمز)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- اسلاید ۲۳: مقایسه پیش‌بینی و معماری -->
+        <section>
+            <h2>۲۳. ارزیابی خروجی‌های همزمان و تحلیل معماری</h2>
+            <div class="grid-container">
+                <div class="img-card">
+                    <!-- عکس درست: مقایسه همزمان پیش بینی ها -->
+                    <img src="27.png" alt="مقایسه پیش بینی ها">
+                    <div class="img-caption">تصویر ۲۷: پیش‌بینی مقایسه‌ای همزمان روی داده یکسان (ResNet در برابر MobileNet)</div>
+                </div>
+                <div class="glass-box">
+                    <ul>
+                        <li><strong>مصالحه دقت و سرعت (Trade-off):</strong>
+                            <br>۱. <span class="highlight">MobileNetV2:</span> با پارامترهای بسیار کمتر، فوق‌العاده سریع است و برای تعبیه مستقیم روی پردازنده‌های ضعیفِ داخل خودرو ایده‌آل است.
+                            <br>۲. <span class="highlight">ResNet50:</span> دقت خیره‌کننده‌ای دارد اما نیازمند توان پردازشی بیشتری است (مناسب برای پردازش ابری یا Edge قدرتمند).
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- اسلاید پایانی -->
+        <section>
+            <h1 style="font-size: 3em; margin-top: 100px;">با سپاس از توجه شما</h1>
+            <h3 style="color: var(--accent-color); margin-top: 30px;">پایان ارائه</h3>
+            <p style="text-align: center; font-size: 1.2em; margin-top: 50px;">آماده پاسخگویی به پرسش‌های شما هستیم.</p>
+        </section>
+    </div>
+</div>
+
+<!-- Reveal.js JS -->
+<!-- Reveal.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        rtl: true, 
+        transition: 'convex',
+        backgroundTransition: 'fade',
+        controlsTutorial: true,
+        
+        // ۱. غیرفعال کردن کیبورد پیش‌فرض برای جلوگیری از باگ‌های حالت RTL
+        keyboard: false 
+    });
+
+    // ۲. تعریف قطعی و دستیِ دکمه‌های کیبورد
+    window.addEventListener("keydown", function(event) {
+        // اگر کلید "راست"، "پایین" یا "اسپیس" زده شد -> برو اسلاید بعدی
+        if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === " ") {
+            Reveal.next();
+        } 
+        // اگر کلید "چپ" یا "بالا" زده شد -> برگرد اسلاید قبلی
+        else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+            Reveal.prev();
+        }
+    });
+</script>
+</body>
+</html>
