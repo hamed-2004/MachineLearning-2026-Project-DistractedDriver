@@ -2,8 +2,8 @@
 
 <div align="center">
 
-[![Aparat Pitch Video](https://img.shields.io/badge/Aparat-Product_Pitch-ec1b24?style=for-the-badge&logo=aparat)](#YOUR_APARAT_LINK_HERE)
-[![YouTube Pitch Video](https://img.shields.io/badge/YouTube-Product_Pitch-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](#YOUR_YOUTUBE_LINK_HERE)
+[![Aparat Pitch Video](https://img.shields.io/badge/Aparat-Product_Pitch-ec1b24?style=for-the-badge&logo=aparat)](https://www.aparat.com/v/dzq86t9)
+[![YouTube Pitch Video](https://img.shields.io/badge/YouTube-Product_Pitch-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/81qpQSVFSF0?si=VR1zr5mQt1Sc-Do9)
 [![Project Report](https://img.shields.io/badge/Google_Drive-Project_Report-1FA463?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1n0Htn8fYO4Xi63GhZazjSBeCDGAtRvAx/view)
 
 </div>
