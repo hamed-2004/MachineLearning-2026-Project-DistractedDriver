@@ -1,4 +1,4 @@
-# 🚗 تشخیص حواس‌پرتی راننده با شبکه‌های یادگیری عمیق (State Farm Distracted Driver Detection)
+# 🚗 Distracted Driver Detection with Deep Learning Networks (State Farm Distracted Driver Detection)
 
 <div align="center">
 
@@ -10,47 +10,47 @@
 
 ---
 
-## 📌 معرفی پروژه (Project Overview)
-این پروژه به‌عنوان پروژه پایانی **درس یادگیری ماشین (Machine Learning)** طراحی و پیاده‌سازی شده است. هدف اصلی، توسعه یک سیستم هوشمند برای تشخیص و دسته‌بندی خودکار رفتار و حالات حواس‌پرتی رانندگان بر پایه الگوریتم‌های یادگیری عمیق و بینایی ماشین است.
+## 📌 Project Overview
+This project was designed and implemented as a final assignment for the **Machine Learning** course. The primary objective is to develop an intelligent system capable of automatically detecting and classifying drivers' distracted behaviors and states based on deep learning and computer vision algorithms.
 
-با استفاده از مجموعه داده تصویری معتبر **State Farm Distracted Driver Detection**، رفتارهای راننده در ۱۰ کلاس مختلف طبقه‌بندی می‌شوند:
-- `c0`: رانندگی ایمن و طبیعی (Safe driving)
-- `c1`: پیام دادن با دست راست (Texting - right)
-- `c2`: صحبت با تلفن با دست راست (Talking on the phone - right)
-- `c3`: پیام دادن با دست چپ (Texting - left)
-- `c4`: صحبت با تلفن با دست چپ (Talking on the phone - left)
-- `c5`: تنظیم رادیو و تجهیزات (Operating the radio)
-- `c6`: نوشیدن (Drinking)
-- `c7`: دست بردن به صندلی عقب (Reaching behind)
-- `c8`: آرایش و مرتب‌سازی ظاهر (Hair and makeup)
-- `c9`: گفتگو با سرنشین جانبی (Talking to passenger)
-
----
-
-## 🧠 معماری‌ها و استراتژی‌های یادگیری (Architectures & Strategies)
-برای دست‌یابی به بیشترین دقت و مقایسه جامع عملکرد، از تکنیک **یادگیری انتقالی (Transfer Learning)** بر روی دو معماری مطرح استفاده شده است:
-
-1. **ResNet50:** مدلی عمیق با ۵۰ لایه و اتصالات باقی‌مانده (Residual Connections) جهت استخراج ویژگی‌های پیچیده دیداری و دستیابی به بالاترین دقت دسته‌بندی.
-2. **MobileNetV2:** مدلی بهینه‌سازی شده با کانولوشن‌های جداپذیر عمقی (Depthwise Separable Convolutions) برای محیط‌های با منابع محاسباتی محدود و سامانه لبه (Edge Devices).
-
-### 💡 نکات فنی و استراتژی‌های پیاده‌سازی:
-- 🛡️ **جلوگیری از نشت داده (Data Leakage):** جداسازی داده‌های آموزش و اعتبارسنجی بر اساس «شناسه راننده» (Driver ID) با استفاده از `GroupShuffleSplit` انجام شده است تا رانندگان حاضر در مجموعه اعتبارسنجی در فاز آموزش کاملاً ناشناخته باقی بمانند.
-- 🔄 **دستکاری هدفمند داده‌ها (Targeted Augmentation):** عدم استفاده از قرینه‌سازی افقی (`horizontal_flip=False`) جهت حفظ تفاوت معنایی کلاس‌های مربوط به دست چپ و دست راست.
-- 🚀 **آموزش دو فازی (Two-Phase Fine-Tuning):**
-  - **فاز اول:** انجماد (Freeze) لایه‌های پایه شبکه و آموزش فقط لایه‌های طبقه‌بندی‌کننده پایانی.
-  - **فاز دوم:** باز کردن قفل لایه‌های بالایی پایه و تنطیم دقیق (Fine-tuning) با نرخ یادگیری بسیار پایین (`lr = 1e-5`).
+Utilizing the valid **State Farm Distracted Driver Detection** image dataset, driver behaviors are categorized into 10 distinct classes:
+- `c0`: Safe driving
+- `c1`: Texting - right
+- `c2`: Talking on the phone - right
+- `c3`: Texting - left
+- `c4`: Talking on the phone - left
+- `c5`: Operating the radio
+- `c6`: Drinking
+- `c7`: Reaching behind
+- `c8`: Hair and makeup
+- `c9`: Talking to passenger
 
 ---
 
-## 📂 ساختار مخزن (Repository Structure)
-این مخزن بر اساس ضوابط معماری تمیز (Clean Architecture) به‌صورت زیر سازمان‌دهی شده است:
+## 🧠 Architectures & Strategies
+To achieve maximum accuracy and provide a comprehensive performance comparison, the **Transfer Learning** technique was employed on two prominent architectures:
+
+1. **ResNet50:** A deep model with 50 layers and Residual Connections designed to extract complex visual features and attain the highest classification accuracy.
+2. **MobileNetV2:** An optimized model featuring Depthwise Separable Convolutions, tailored for environments with limited computational resources and Edge Devices.
+
+### 💡 Technical Insights and Implementation Strategies:
+- 🛡️ **Preventing Data Leakage:** The separation of training and validation data based on the 'Driver ID' was conducted using `GroupShuffleSplit`. This ensures that drivers present in the validation set remain completely unseen during the training phase.
+- 🔄 **Targeted Augmentation:** Horizontal mirroring (`horizontal_flip=False`) was intentionally omitted to preserve the semantic distinction between classes involving the left and right hands.
+- 🚀 **Two-Phase Fine-Tuning:**
+  - **Phase 1:** Freezing the network's base layers and training only the final classification layers.
+  - **Phase 2:** Unfreezing the top base layers and performing fine-tuning with a very low learning rate (`lr = 1e-5`).
+
+---
+
+## 📂 Repository Structure
+This repository is organized in accordance with Clean Architecture principles as follows:
 
 ```text
 📦 MachineLearning-2026-Project-DistractedDriver
- ┣ 📂 code/               # سورس‌کدهای پایتون، خط‌لوله داده و پیاده‌سازی مدل‌ها
- ┣ 📂 docs/              # فایل PDF گزارش نهایی و کدهای سورس LaTeX
- ┣ 📂 media/             # نمودارهای ارزیابی، ماتریس درهم‌ریختگی و فایل ارائه HTML
- ┣ 📂 data/              # راهنمای دریافت دیتاسِت (فایل‌ها به دلیل حجم بالا مستثنی شده‌اند)
- ┣ 📜 .gitignore         # فایل مستثنی‌کننده فایل‌های سنگین و موقت
- ┣ 📜 requirements.txt   # فهرست کتابخانه‌های پایتون مورد نیاز
- ┗ 📜 README.md          # مستندات و شناسنامه اصلی پروژه
+ ┣ 📂 code/               # Python source code, data pipeline, and model implementations
+ ┣ 📂 docs/               # Final PDF report and LaTeX source codes
+ ┣ 📂 media/              # Evaluation plots, confusion matrix, and HTML presentation file
+ ┣ 📂 data/               # Dataset retrieval guide (files are excluded due to large size)
+ ┣ 📜 .gitignore          # File for excluding heavy and temporary files
+ ┣ 📜 requirements.txt    # List of required Python libraries
+ ┗ 📜 README.md           # Main documentation and project identity
